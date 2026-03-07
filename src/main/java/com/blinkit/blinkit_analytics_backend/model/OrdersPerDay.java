@@ -1,14 +1,17 @@
 package com.blinkit.blinkit_analytics_backend.model;
 
-public class OrdersPerDay {
-    private final String date;
-    private final int totalOrder;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-    public OrdersPerDay(String date, int totalOrder){
+public class OrdersPerDay {
+    private final LocalDate date;
+    private final long totalOrder;
+
+    public OrdersPerDay(LocalDate date, long totalOrder){
         this.date = date;
         this.totalOrder = totalOrder;
     }
 
-    public String getDate(){ return date; }
-    public int getTotalOrder() { return totalOrder; }
+    public LocalDate getDate(){ return date; }
+    public long getTotalOrder() { return totalOrder; }
 }

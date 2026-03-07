@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,18 +104,18 @@ public class AnalyticsRepository {
 
     public List<OrdersPerDay> getOrdersPerDay(){
         String sql = """
-                SELECT EXTRACT(DAY FROM order_time) AS date, COUNT(*)
+                SELECT DATE(order_time) AS order_date, COUNT(*)
                 FROM orders
-                GROUP BY date
-                ORDER BY date;
+                GROUP BY order_date
+                ORDER BY order_date;
                 """;
 
         List<Object[]> results = entityManager.createNativeQuery(sql).getResultList();
         List<OrdersPerDay> response = new ArrayList<>();
 
         for (Object[] row : results){
-            String date = (String) row[0];
-            int total = ((Number) row[1]).intValue();
+            LocalDate date = (LocalDate) row[0];
+            long total = ((Number) row[1]).longValue();
 
             response.add(new OrdersPerDay(date, total));
         }
