@@ -41,4 +41,16 @@ public class AnalyticsService {
     public List<OrdersPerDay> getOrdersPerDay(){
         return analyticsRepository.getOrdersPerDay();
     }
+    public List<RevenuePerCity> getRevenuePerCity(){
+        return analyticsRepository.getRevenuePerCity();
+    }
+    public double getAVGOrderValue(){
+        return analyticsRepository.getAvgOrderValue();
+    }
+    public List<CancellationPerCity> getCancellationPerCity(){
+        return analyticsRepository.getCancellationPerCity();
+    }
+    public List<DeliveryTImeByHour> getDeliveryTimeByHour(){
+        return analyticsRepository.getDeliveryTimeByHour();
+    }
 }

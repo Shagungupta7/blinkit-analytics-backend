@@ -46,4 +46,23 @@ public class AnalyticsController {
     public List<OrdersPerDay> getOrderPerDay(){
         return analyticsService.getOrdersPerDay();
     }
+
+    @GetMapping("/revenue-per-city")
+    public List<RevenuePerCity> getRevenuePerCity(){
+        return analyticsService.getRevenuePerCity();
+    }
+    @GetMapping("/avg-order-value")
+    public double getAvgOrderValue(){
+        return analyticsService.getAVGOrderValue();
+    }
+
+    @GetMapping("/cancellation-per-city")
+    public List<CancellationPerCity> getCancellationPerCity(){
+        return analyticsService.getCancellationPerCity();
+    }
+
+    @GetMapping("/peak-delivery-hours")
+    public List<DeliveryTImeByHour> getDeliveryTImeByHour(){
+        return analyticsService.getDeliveryTimeByHour();
+    }
 }

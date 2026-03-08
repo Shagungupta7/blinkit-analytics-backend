@@ -8,6 +8,7 @@ import jakarta.persistence.PersistenceContext;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,6 +119,84 @@ public class AnalyticsRepository {
             long total = ((Number) row[1]).longValue();
 
             response.add(new OrdersPerDay(date, total));
+        }
+        return response;
+    }
+
+    public List<RevenuePerCity> getRevenuePerCity(){
+        String sql = """
+                SELECT city, SUM(order_amount) AS total_amount
+                FROM orders
+                GROUP BY city
+                ORDER BY total_amount ASC;
+                """;
+
+        List<Object[]> results = entityManager.createNativeQuery(sql).getResultList();
+        List<RevenuePerCity> response = new ArrayList<>();
+
+        for(Object[] row : results){
+            String city = (String) row[0];
+            double revenue = ((Number) row[1]).doubleValue();
+
+            response.add(new RevenuePerCity(city, revenue));
+        }
+        return response;
+    }
+
+    public double getAvgOrderValue() {
+        String sql = """
+                SELECT SUM(order_amount)/COUNT(order_id)
+                FROM orders;
+                """;
+
+        Object res = entityManager.createNativeQuery(sql).getSingleResult();
+
+        return ((Number) res).doubleValue();
+    }
+
+    public List<CancellationPerCity> getCancellationPerCity(){
+        String sql = """
+                SELECT city,
+                COUNT(CASE WHEN status = 'Cancelled' THEN 1 END) AS cancelled_orders,
+                COUNT(*) AS total_orders,
+                ROUND( COUNT(CASE WHEN status = 'Cancelled' THEN 1 END)::numeric / COUNT(*), 2)
+                AS cancellation_rate
+                FROM orders
+                GROUP BY city;
+                """;
+
+        List<Object[]> res = entityManager.createNativeQuery(sql).getResultList();
+        List<CancellationPerCity> response = new ArrayList<>();
+
+        for(Object[] row : res){
+            String city = (String) row[0];
+            long cancelled_orders = (((Number) row[1]).longValue());
+            long total_orders = ((Number) row[2]).longValue();
+            double rate = ((Number) row[3]).doubleValue();
+            response.add(new CancellationPerCity(city, cancelled_orders, total_orders, rate));
+        }
+        return response;
+    }
+
+    public List<DeliveryTImeByHour> getDeliveryTimeByHour(){
+        String sql = """
+                SELECT EXTRACT(HOUR FROM o.order_time) AS hour,
+                AVG(d.delivery_minutes)
+                FROM orders o
+                JOIN deliveries d
+                ON o.order_id = d.order_id
+                GROUP BY hour
+                ORDER BY hour;
+                """;
+
+        List<DeliveryTImeByHour> response = new ArrayList<>();
+        List<Object[]> results = entityManager.createNativeQuery(sql).getResultList();
+
+        for (Object[] row : results){
+            int hour = ((Number) row[0]).intValue();
+            double avgDeliveryTime = ((Number) row[1]).doubleValue();
+
+            response.add(new DeliveryTImeByHour(hour, avgDeliveryTime));
         }
         return response;
     }
