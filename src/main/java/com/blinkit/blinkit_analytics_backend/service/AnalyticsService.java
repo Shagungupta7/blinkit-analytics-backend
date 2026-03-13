@@ -24,8 +24,8 @@ public class AnalyticsService {
         this.orderRepository = orderRepository;
     }
 
-    public List<CancellationRateResponse> getCancellationRate() {
-        return analyticsRepository.getCancellationRateByCity();
+    public double getAvgCancellationRate() {
+        return analyticsRepository.getAvgCancellationRate();
     }
 
     public List<OrdersPerCity> getOrderPerCity(){

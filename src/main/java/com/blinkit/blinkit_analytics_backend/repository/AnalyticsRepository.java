@@ -18,28 +18,17 @@ public class AnalyticsRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public List<CancellationRateResponse> getCancellationRateByCity() {
+    public double getAvgCancellationRate() {
 
         String sql = """
-            SELECT o.city,
-            ROUND(COUNT(c.order_id)::numeric / COUNT(o.order_id) * 100, 2)
+            SELECT ROUND(COUNT(c.order_id)::numeric / COUNT(o.order_id) * 100, 2)
             FROM orders o
-            LEFT JOIN cancellations c ON o.order_id = c.order_id
-            GROUP BY o.city
+            LEFT JOIN cancellations c ON o.order_id = c.order_id;
         """;
 
-        List<Object[]> results = entityManager.createNativeQuery(sql).getResultList();
+        Object results = entityManager.createNativeQuery(sql).getSingleResult();
 
-        List<CancellationRateResponse> response = new ArrayList<>();
-
-        for (Object[] row : results) {
-            String city = (String) row[0];
-            Double rate = ((Number) row[1]).doubleValue();
-
-            response.add(new CancellationRateResponse(city, rate));
-        }
-
-        return response;
+        return ((Number) results).doubleValue();
     }
 
     public List<OrdersPerCity> getOrdersPerCity(){
@@ -108,7 +97,7 @@ public class AnalyticsRepository {
                 SELECT DATE(order_time) AS order_date, COUNT(*)
                 FROM orders
                 GROUP BY order_date
-                ORDER BY order_date;
+                ORDER BY order_date DESC;
                 """;
 
         List<Object[]> results = entityManager.createNativeQuery(sql).getResultList();
@@ -186,7 +175,7 @@ public class AnalyticsRepository {
                 JOIN deliveries d
                 ON o.order_id = d.order_id
                 GROUP BY hour
-                ORDER BY hour;
+                ORDER BY hour DESC;
                 """;
 
         List<DeliveryTImeByHour> response = new ArrayList<>();

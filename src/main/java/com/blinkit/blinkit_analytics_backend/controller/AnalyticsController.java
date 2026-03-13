@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/analytics")
+@CrossOrigin(origins = "http://localhost:5173")
 public class AnalyticsController {
 
     private final AnalyticsService analyticsService;
@@ -18,8 +19,8 @@ public class AnalyticsController {
     }
 
     @GetMapping("/cancellation-rate")
-    public List<CancellationRateResponse> getCancellationRate() {
-        return analyticsService.getCancellationRate();
+    public double getCancellationRate() {
+        return analyticsService.getAvgCancellationRate();
     }
 
     @GetMapping("/total-orders")
