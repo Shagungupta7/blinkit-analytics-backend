@@ -53,4 +53,7 @@ public class AnalyticsService {
     public List<DeliveryTImeByHour> getDeliveryTimeByHour(){
         return analyticsRepository.getDeliveryTimeByHour();
     }
+    public  List<OrderPerHour> getOrderPerHour(){
+        return analyticsRepository.getOrderPerHour();
+    }
 }

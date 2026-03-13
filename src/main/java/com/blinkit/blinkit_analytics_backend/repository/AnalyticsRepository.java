@@ -189,4 +189,24 @@ public class AnalyticsRepository {
         }
         return response;
     }
+
+    public List<OrderPerHour> getOrderPerHour(){
+        String sql = """
+                SELECT EXTRACT(HOUR FROM order_time) AS hour, COUNT(*)
+                FROM orders
+                GROUP BY hour
+                ORDER BY hour;
+                """;
+
+        List<Object[]> result = entityManager.createNativeQuery(sql).getResultList();
+        List<OrderPerHour> response = new ArrayList<>();
+
+        for(Object[] row : result){
+            int hour = ((Number) row[0]).intValue();
+            long orders = ((Number) row[1]).intValue();
+
+            response.add(new OrderPerHour(orders, hour));
+        }
+        return response;
+    }
 }

@@ -66,4 +66,9 @@ public class AnalyticsController {
     public List<DeliveryTImeByHour> getDeliveryTImeByHour(){
         return analyticsService.getDeliveryTimeByHour();
     }
+
+    @GetMapping("/orders-per-hour")
+    public List<OrderPerHour> getOrderPerHour(){
+        return analyticsService.getOrderPerHour();
+    }
 }
