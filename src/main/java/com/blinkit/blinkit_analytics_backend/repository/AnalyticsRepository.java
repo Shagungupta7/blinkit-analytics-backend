@@ -209,4 +209,80 @@ public class AnalyticsRepository {
         }
         return response;
     }
+
+    public double getTotalRevenue() {
+        String sql = """
+                SELECT
+                ROUND(SUM(order_amount)::numeric, 2)
+                FROM orders;
+                """;
+
+        Object results = entityManager.createNativeQuery(sql).getSingleResult();
+
+        return ((Number) results).doubleValue();
+    }
+
+    public long getTotalRiders(){
+        String sql = """
+                SELECT
+                COUNT(riderid)
+                FROM rider;
+                """;
+
+        Object result = entityManager.createNativeQuery(sql).getSingleResult();
+
+        return ((Number) result).longValue();
+    }
+
+    public double getAvgDeliveryTime() {
+        String sql = """
+                SELECT
+                ROUND(AVG(delivery_minutes)::numeric,2)
+                FROM deliveries;
+                """;
+
+        Object result = entityManager.createNativeQuery(sql).getSingleResult();
+
+        return ((Number) result).doubleValue();
+    }
+
+    public List<OrdersPerPaymentMethod> getOrdersPerPaymentMethod(){
+        String sql = """
+                 SELECT
+                 payment_method, COUNT(order_id)
+                 FROM orders
+                 GROUP BY payment_method;
+                """;
+
+        List<Object[]> results = entityManager.createNativeQuery(sql).getResultList();
+        List<OrdersPerPaymentMethod> response = new ArrayList<>();
+
+        for(Object[] row : results){
+            String method = row[0].toString();
+            long totalOrders = ((Number)row[1]).longValue();
+
+            response.add(new OrdersPerPaymentMethod(method, totalOrders));
+        }
+        return response;
+    }
+
+    public List<OrdersPerCategory> getOrdersPerCategory(){
+        String sql = """
+                SELECT
+                category, COUNT(order_id)
+                FROM orders
+                GROUP BY category;
+                """;
+
+        List<Object[]> results = entityManager.createNativeQuery(sql).getResultList();
+        List<OrdersPerCategory> response = new ArrayList<>();
+
+        for(Object[] row : results){
+            String category = row[0].toString();
+            long totalOrders = ((Number) row[1]).longValue();
+
+            response.add(new OrdersPerCategory(category, totalOrders));
+        }
+        return response;
+    }
 }

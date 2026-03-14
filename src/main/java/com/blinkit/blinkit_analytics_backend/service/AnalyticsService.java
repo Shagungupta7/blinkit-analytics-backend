@@ -56,4 +56,18 @@ public class AnalyticsService {
     public  List<OrderPerHour> getOrderPerHour(){
         return analyticsRepository.getOrderPerHour();
     }
+    public double getTotalRevenue() {
+        return analyticsRepository.getTotalRevenue();
+    }
+    public long getTotalRiders(){
+        return analyticsRepository.getTotalRiders();
+    }
+
+    public List<OrdersPerPaymentMethod> getOrdersPerPaymentMethod(){
+        return analyticsRepository.getOrdersPerPaymentMethod();
+    }
+
+    public List<OrdersPerCategory> getOrdersPerCategory(){
+        return analyticsRepository.getOrdersPerCategory();
+    }
 }

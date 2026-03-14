@@ -71,4 +71,24 @@ public class AnalyticsController {
     public List<OrderPerHour> getOrderPerHour(){
         return analyticsService.getOrderPerHour();
     }
+
+    @GetMapping("total-revenue")
+    public double getTotalRevenue() {
+        return analyticsService.getTotalRevenue();
+    }
+
+    @GetMapping("total-riders")
+    public long getTotalRiders(){
+        return analyticsService.getTotalRiders();
+    }
+
+    @GetMapping("orders-per-payment-method")
+    public List<OrdersPerPaymentMethod> getOrderPerPaymentMethod(){
+        return analyticsService.getOrdersPerPaymentMethod();
+    }
+
+    @GetMapping("orders-per-category")
+    public List<OrdersPerCategory> getOrdersPerCategory(){
+        return analyticsService.getOrdersPerCategory();
+    }
 }
