@@ -63,6 +63,10 @@ public class AnalyticsService {
         return analyticsRepository.getTotalRiders();
     }
 
+    public double getAvgDeliveryTime(){
+        return analyticsRepository.getAvgDeliveryTime();
+    }
+
     public List<OrdersPerPaymentMethod> getOrdersPerPaymentMethod(){
         return analyticsRepository.getOrdersPerPaymentMethod();
     }

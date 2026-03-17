@@ -82,6 +82,11 @@ public class AnalyticsController {
         return analyticsService.getTotalRiders();
     }
 
+    @GetMapping("avg-delivery-time")
+    public double getAvgDeliveryTime(){
+        return analyticsService.getAvgDeliveryTime();
+    }
+
     @GetMapping("orders-per-payment-method")
     public List<OrdersPerPaymentMethod  > getOrderPerPaymentMethod(){
         return analyticsService.getOrdersPerPaymentMethod();
