@@ -70,4 +70,20 @@ public class AnalyticsService {
     public List<OrdersPerCategory> getOrdersPerCategory(){
         return analyticsRepository.getOrdersPerCategory();
     }
+
+    public List<ZoneWiseDistribution> getZoneWiseDistribution(){
+        return analyticsRepository.getZoneWiseDistribution();
+    }
+
+    public List<RiderPerCity> getRiderPerCity(){
+        return analyticsRepository.getRiderPerCity();
+    }
+
+    public List<RiderUtilization> getRiderUtilization(){
+        return analyticsRepository.getRiderUtilization();
+    }
+
+    public long getRepeatCustomers(){
+        return analyticsRepository.getRepeatCustomers();
+    }
 }

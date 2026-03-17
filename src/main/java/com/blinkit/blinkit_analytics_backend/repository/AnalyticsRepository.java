@@ -285,4 +285,90 @@ public class AnalyticsRepository {
         }
         return response;
     }
+
+    public List<ZoneWiseDistribution> getZoneWiseDistribution(){
+        String sql = """
+                SELECT city, zone, COUNT(*)
+                FROM orders
+                GROUP BY city, zone;
+                """;
+
+        List<Object[]> results = entityManager.createNativeQuery(sql).getResultList();
+        List<ZoneWiseDistribution> response = new ArrayList<>();
+
+        for(Object[] row : results){
+            String city = row[0].toString();
+            String zone = row[1].toString();
+            long orders = ((Number)row[2]).longValue();
+
+            response.add(new ZoneWiseDistribution(city, zone, orders));
+        }
+        return response;
+    }
+
+    public List<RiderPerCity> getRiderPerCity(){
+        String sql = """
+                SELECT city, COUNT(*)
+                FROM rider
+                GROUP BY city;
+                """;
+
+        List<Object[]> results = entityManager.createNativeQuery(sql).getResultList();
+        List<RiderPerCity> response = new ArrayList<>();
+
+        for(Object[] row : results){
+            String city = row[0].toString();
+            long count = ((Number)row[1]).longValue();
+
+            response.add(new RiderPerCity(city, count));
+        }
+
+        return response;
+    }
+
+    public List<RiderUtilization> getRiderUtilization(){
+        String sql = """
+                SELECT
+                r.city,
+                COUNT(d.delivery_id) AS total_deliveries,
+                COUNT(DISTINCT r.riderid) AS total_riders,
+                COUNT(d.delivery_id)/COUNT(DISTINCT r.riderid) AS avg_deliveries_per_rider
+                FROM rider r
+                JOIN deliveries d
+                ON r.riderid = d.riderid
+                GROUP BY r.city;
+                """;
+
+        List<Object[]> results = entityManager.createNativeQuery(sql).getResultList();
+        List<RiderUtilization> response = new ArrayList<>();
+
+        for(Object[] row : results){
+            String city = row[0].toString();
+            long deliveries = ((Number) row[1]).longValue();
+            long riders = ((Number) row[2]).longValue();
+            long avg = ((Number) row[3]).longValue();
+
+            response.add(new RiderUtilization(city, deliveries, riders, avg));
+        }
+        return response;
+    }
+
+    public long getRepeatCustomers(){
+        String sql = """
+                 SELECT
+                 COUNT(*)
+                 FROM
+                 (SELECT
+                 customer_id,
+                 COUNT(order_id)
+                 FROM orders
+                 GROUP BY customer_id
+                 HAVING COUNT(order_id) > 1)
+                 AS repeat_customers;
+                """;
+
+        Object results = entityManager.createNativeQuery(sql).getSingleResult();
+
+        return ((Number) results).longValue();
+    }
 }

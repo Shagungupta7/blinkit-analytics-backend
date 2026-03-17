@@ -83,12 +83,32 @@ public class AnalyticsController {
     }
 
     @GetMapping("orders-per-payment-method")
-    public List<OrdersPerPaymentMethod> getOrderPerPaymentMethod(){
+    public List<OrdersPerPaymentMethod  > getOrderPerPaymentMethod(){
         return analyticsService.getOrdersPerPaymentMethod();
     }
 
     @GetMapping("orders-per-category")
     public List<OrdersPerCategory> getOrdersPerCategory(){
         return analyticsService.getOrdersPerCategory();
+    }
+
+    @GetMapping("zone-wise-distribution")
+    public List<ZoneWiseDistribution> getZoneWiseDistribution(){
+        return analyticsService.getZoneWiseDistribution();
+    }
+
+    @GetMapping("rider-per-city")
+    public List<RiderPerCity> getRiderPerCity(){
+        return analyticsService.getRiderPerCity();
+    }
+
+    @GetMapping("rider-utilization")
+    public List<RiderUtilization> getRiderUtilization(){
+        return analyticsService.getRiderUtilization();
+    }
+
+    @GetMapping("repeat-customers")
+    public long getRepeatCustomers(){
+        return analyticsService.getRepeatCustomers();
     }
 }
