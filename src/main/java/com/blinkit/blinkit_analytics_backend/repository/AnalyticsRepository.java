@@ -297,11 +297,10 @@ public class AnalyticsRepository {
         List<ZoneWiseDistribution> response = new ArrayList<>();
 
         for(Object[] row : results){
-            String city = row[0].toString();
-            String zone = row[1].toString();
-            long orders = ((Number)row[2]).longValue();
+            String zone = row[0].toString();
+            long orders = ((Number)row[1]).longValue();
 
-            response.add(new ZoneWiseDistribution(city, zone, orders));
+            response.add(new ZoneWiseDistribution(zone, orders));
         }
         return response;
     }
