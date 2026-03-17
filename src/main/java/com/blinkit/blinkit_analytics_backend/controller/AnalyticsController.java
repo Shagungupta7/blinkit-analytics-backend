@@ -88,7 +88,7 @@ public class AnalyticsController {
     }
 
     @GetMapping("orders-per-payment-method")
-    public List<OrdersPerPaymentMethod  > getOrderPerPaymentMethod(){
+    public List<OrdersPerPaymentMethod> getOrderPerPaymentMethod(){
         return analyticsService.getOrdersPerPaymentMethod();
     }
 
