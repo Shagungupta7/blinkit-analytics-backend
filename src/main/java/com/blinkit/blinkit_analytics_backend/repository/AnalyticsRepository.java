@@ -288,9 +288,9 @@ public class AnalyticsRepository {
 
     public List<ZoneWiseDistribution> getZoneWiseDistribution(){
         String sql = """
-                SELECT city, zone, COUNT(*)
+                SELECT zone, COUNT(*)
                 FROM orders
-                GROUP BY city, zone;
+                GROUP BY zone;
                 """;
 
         List<Object[]> results = entityManager.createNativeQuery(sql).getResultList();
