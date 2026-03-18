@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/analytics")
-@CrossOrigin(origins = {"http://localhost:5173", "http://blinkit-dashboard-uud6.vercel.app/"})
+@CrossOrigin(origins = {"http://localhost:5173", "https://blinkit-dashboard-uud6.vercel.app"})
 public class AnalyticsController {
 
     private final AnalyticsService analyticsService;
