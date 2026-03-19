@@ -71,12 +71,13 @@ public class AnalyticsRepository {
 
     public List<Top5Riders> getTopRiders() {
         String sql = """
-                SELECT r.name, ROUND(AVG(d.delivery_minutes)::numeric, 2) AS avg_time
+                SELECT
+                r.name,
+                d.delivery_minutes
                 FROM rider r
                 JOIN deliveries d
                 ON r.riderid = d.riderid
-                GROUP BY r.name
-                ORDER BY avg_time ASC
+                ORDER BY d.delivery_minutes ASC
                 LIMIT 5;
                 """;
 
